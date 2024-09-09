@@ -3,13 +3,13 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY ./app /app
+COPY requirements.txt .
 
 RUN apt-get update && apt-get install -y pandoc
 
 # Install FastAPI and Uvicorn
-COPY ./requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
+COPY . .
 
 # Expose the port
 EXPOSE 8001

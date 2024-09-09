@@ -5,6 +5,10 @@ import os
 
 app = FastAPI()
 
+@app.get("/")
+async def hello():
+    return {"hello" : "world"}
+
 @app.post("/convert-to-md/")
 async def convert_to_md(file: UploadFile = File(...)):
     # Save the uploaded file temporarily
