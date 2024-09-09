@@ -1,3 +1,6 @@
 fastapi
 uvicorn
 python-multipart
+PyMuPDF==1.24.9
+pymupdf4llm==0.0.10
+PyMuPDFb==1.24.9
