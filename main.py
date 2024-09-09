@@ -1,23 +1,26 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File,Query,Form
 import subprocess
 import shutil
 import os
-
+import random
 app = FastAPI()
 
 @app.get("/")
 async def hello():
     return {"hello" : "world"}
 
-@app.post("/convert-to-md/")
+@app.post("/docx-to-md/")
 async def convert_to_md(file: UploadFile = File(...)):
+
+    random_number = str(random.randint(10000, 99999))
+
     # Save the uploaded file temporarily
-    input_file = f"/tmp/{file.filename}"
+    input_file = f"/tmp/{random_number}.docx"
     with open(input_file, "wb") as f:
         shutil.copyfileobj(file.file, f)
 
     # Convert the file to markdown using pandoc
-    output_file = f"/tmp/{os.path.splitext(file.filename)[0]}.md"
+    output_file = f"/tmp/{os.path.splitext(random_number)[0]}.md"
     subprocess.run(["pandoc", input_file, "-o", output_file])
 
     # Read the converted markdown content
@@ -28,4 +31,4 @@ async def convert_to_md(file: UploadFile = File(...)):
     os.remove(input_file)
     os.remove(output_file)
 
-    return {"filename": file.filename, "markdown": markdown_content}
+    return {"markdown": markdown_content}
